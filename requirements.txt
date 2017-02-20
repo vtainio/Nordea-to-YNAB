@@ -1,0 +1,143 @@
+# appdirs
+# License: MIT
+# Homepage: http://github.com/ActiveState/appdirs
+# Author: Trent Mick; Sridhar Ratnakumar
+appdirs==1.4.0
+
+# chardet
+chardet==2.3.0
+
+# click
+# Homepage: http://github.com/mitsuhiko/click
+# Author: Armin Ronacher
+click==6.6
+
+# ConfigArgParse
+# License: MIT
+# Homepage: https://github.com/zorro3/ConfigArgParse
+# Author: Zorro
+ConfigArgParse==0.10.0
+
+# dateparser
+dateparser==0.3.5
+
+# enum34
+# License: BSD License
+# Homepage: https://pypi.python.org/pypi/enum34
+# Author: Ethan Furman
+enum34==1.1.4
+
+# et-xmlfile
+et-xmlfile==1.0.1
+
+# functools32
+functools32==3.2.3.post2
+
+# future
+# License: MIT
+# Homepage: https://python-future.org
+# Author: Ed Schofield
+future==0.15.2
+
+# ijson
+ijson==2.3
+
+# jdatetime
+jdatetime==1.8.1
+
+# jdcal
+jdcal==1.2
+
+# jsonschema
+jsonschema==2.5.1
+
+# jsontableschema
+jsontableschema==0.6.0
+
+# ofxtools
+# License: MIT
+# Homepage: https://github.com/csingley/ofxtools
+# Author: Christopher Singley
+ofxtools==0.3.8
+
+# openpyxl
+openpyxl==2.3.5
+
+# pynab
+pynab==0.6.8
+
+# pynYNAB
+pynYNAB==0.1
+
+# python-dateutil
+# License: Simplified BSD
+# Homepage: https://dateutil.readthedocs.org
+# Author: Paul Ganssle, Yaron de Leeuw
+python-dateutil==2.5.3
+
+# pytz
+# License: MIT
+# Homepage: http://pythonhosted.org/pytz
+# Author: Stuart Bishop
+pytz==2016.4
+
+# PyYAML
+# License: MIT
+# Homepage: http://pyyaml.org/wiki/PyYAML
+# Author: Kirill Simonov
+PyYAML==3.11
+
+# regex
+regex==2016.4.25
+
+# requests
+# License: Apache 2.0
+# Homepage: http://python-requests.org
+# Author: Kenneth Reitz
+requests==2.10.0
+
+# rfc3986
+# License: Apache 2.0
+# Homepage: https://rfc3986.readthedocs.org
+# Author: Ian Cordasco
+rfc3986==0.3.1
+
+# schematics
+# License: BSD
+# Homepage: https://github.com/schematics/schematics
+# Author: James Dennis, Jökull Sólberg, Jóhann Þorvaldur Bergþórsson, Kalle Tuure
+schematics==1.1.1
+
+# six
+# License: MIT
+# Homepage: http://pypi.python.org/pypi/six/
+# Author: Benjamin Peterson
+six==1.10.0
+
+# tabulator
+tabulator==0.3.13
+
+# toolz
+# License: BSD
+# Homepage: http://github.com/pytoolz/toolz/
+# Author: Matthew Rocklin
+toolz==0.7.4
+
+# umalqurra
+umalqurra==0.2
+
+# unicodecsv
+# License: BSD License
+# Homepage: https://github.com/jdunck/python-unicodecsv
+# Author: Jeremy Dunck
+unicodecsv==0.14.1
+
+# wheel
+# License: MIT
+# Homepage: http://bitbucket.org/pypa/wheel/
+# Author: Daniel Holth
+wheel==0.24.0
+
+# xlrd
+xlrd==0.9.4
+
