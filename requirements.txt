@@ -39,6 +39,9 @@ functools32==3.2.3.post2
 # Author: Ed Schofield
 future==0.15.2
 
+# gspread
+gspread==0.3.0
+
 # ijson
 ijson==2.3
 
