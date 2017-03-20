@@ -2,4 +2,7 @@ settings.py
 transactions/
 *.pyc
 .idea
+.env
+.DS_STORE
+pynynab.log
 
