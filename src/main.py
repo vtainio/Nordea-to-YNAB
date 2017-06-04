@@ -1,4 +1,3 @@
-import argparse
 import os
 import sys
 import csv
@@ -7,13 +6,9 @@ import datetime
 from pynYNAB.Client import clientfromargs
 from pynYNAB.schema.budget import Transaction
 
-
-class NordeaTransaction(object):
-    def __init__(self, row):
-        self.date = row[2]
-        self.amount = row[3][1:]
-        self.target = row[4]
-
+from src.database import store_categories
+from src.database import get_subcategory_for_transaction
+from src.models import NordeaTransaction
 
 def process_file(filepath):
     nordea_transactions = []
@@ -48,7 +43,7 @@ def run(args):
     push_transactions(nordea_transactions, args)
 
 
-def get_ynab_transaction(nordea_transaction, account_id):
+def get_ynab_transaction(nordea_transaction, account_id, subcategory_id):
     imported_date = datetime.datetime.now().date()
     splitted_amount = nordea_transaction.amount.split(",")
     return Transaction(
@@ -56,6 +51,7 @@ def get_ynab_transaction(nordea_transaction, account_id):
         amount=float("-%s.%s" % (splitted_amount[0], splitted_amount[1])),
         date=datetime.datetime.strptime(nordea_transaction.date, "%d.%m.%Y"),
         imported_date=imported_date,
+        entities_subcategory_id=subcategory_id,
         source="Imported"
     )
 
@@ -74,36 +70,12 @@ def push_transactions(nordea_transactions, args):
         print "Could not find checking account"
         sys.exit()
 
+    store_categories(client.budget.be_subcategories)
+
     for nordea_transaction in nordea_transactions:
-        new_transaction = get_ynab_transaction(nordea_transaction, account.id)
-        client.add_transaction(new_transaction)
+        subcategory_id = get_subcategory_for_transaction(nordea_transaction)
+        print "subcategory %s" % subcategory_id
+        # new_transaction = get_ynab_transaction(nordea_transaction, account.id, subcategory_id)
+        # client.add_transaction(new_transaction)
 
     client.sync()
-
-
-if __name__ == '__main__':
-    # Parse filename.
-    parser = argparse.ArgumentParser(description="TODO write description.")
-    parser.add_argument('--file', help='Transactions filename')
-    args = parser.parse_args()
-
-    username = os.environ['YNAB_USERNAME']
-    password = os.environ['YNAB_PASSWORD']
-
-    if not username:
-        print "No YNAB username provided"
-        sys.exit()
-
-    if not password:
-        print "No YNAB password provided"
-        sys.exit()
-
-    if not args.file:
-        print "Error: No filename provided"
-        sys.exit()
-
-    args.email = username
-    args.password = password
-    args.budgetname = "My Budget"
-
-    run(args)

@@ -5,4 +5,5 @@ transactions/
 .env
 .DS_STORE
 pynynab.log
+nordea_to_ynab.db
 
