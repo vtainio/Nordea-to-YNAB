@@ -7,6 +7,7 @@ import datetime
 from pynYNAB.Client import clientfromargs
 from pynYNAB.schema.budget import Transaction
 
+
 class NordeaTransaction(object):
     def __init__(self, row):
         self.date = row[2]
@@ -28,21 +29,24 @@ def process_file(filepath):
 
         return nordea_transactions
 
+
 def process_row(row):
     outflow = False
-    if (row[3][0] == '-'): # Check if the transaction is negative.
+    if row[3][0] == '-': # Check if the transaction is negative.
         outflow = True
     if outflow:
         return NordeaTransaction(row)
 
+
 def run(args):
-    filepath = 'transactions/%s' % args.file
-    if not os.path.isfile(filepath):
-        print "Error: No such file exists (%s)" % filepath
+    file_path = 'transactions/%s' % args.file
+    if not os.path.isfile(file_path):
+        print "Error: No such file exists (%s)" % file_path
         sys.exit()
 
-    nordea_transactions = process_file(filepath)
+    nordea_transactions = process_file(file_path)
     push_transactions(nordea_transactions, args)
+
 
 def get_ynab_transaction(nordea_transaction, account_id):
     imported_date = datetime.datetime.now().date()
@@ -55,6 +59,7 @@ def get_ynab_transaction(nordea_transaction, account_id):
         source="Imported"
     )
 
+
 def push_transactions(nordea_transactions, args):
     client = clientfromargs(args)
     client.sync()
@@ -63,6 +68,7 @@ def push_transactions(nordea_transactions, args):
     for be_account in client.budget.be_accounts:
         if be_account.account_name == 'Checking':
             account = be_account
+            break
 
     if not account:
         print "Could not find checking account"
