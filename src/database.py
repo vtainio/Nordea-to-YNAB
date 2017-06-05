@@ -48,6 +48,7 @@ def get_subcategory_for_transaction(transaction):
 
     return category_id
 
+
 def get_subcategory_from_user(cursor, target):
     cursor.execute("SELECT * FROM category")
     categories = cursor.fetchall()
@@ -62,11 +63,12 @@ def get_subcategory_from_user(cursor, target):
     id = prompt_user_for_id(target, options)
     return categories_by_name[options[id][1]]
 
+
 def prompt_user_for_id(target, options):
     print "No category found for %s. Please select one from below:\n\n" % target
     print tabulate(options, headers=["ID, Name"])
     while True:
         selection = raw_input("Enter the ID of your selection: ")
-        if (selection.isdigit() and int(selection) >= 0 and int(selection) < len(options)):
+        if selection.isdigit() and int(selection) >= 0 and int(selection) < len(options):
             break
     return int(selection)
