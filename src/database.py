@@ -1,4 +1,5 @@
 import sqlite3
+from tabulate import tabulate
 
 DATABASE_NAME = 'nordea_to_ynab.db'
 
@@ -10,6 +11,7 @@ def prepare_tables(cursor):
 
 def get_db_connection():
     conn = get_sqlite_connection()
+    conn.text_factory = str
     c = conn.cursor()
     prepare_tables(c)
     return conn, c
@@ -32,14 +34,39 @@ def store_categories(categories):
 def get_subcategory_for_transaction(transaction):
     conn, c = get_db_connection()
 
-    existing_category_id = c.execute("SELECT category_id FROM payment WHERE name=?", transaction.target)
-    if not existing_category_id:
-        category_id = get_subcategory_from_user(transaction.target)
+    c.execute("SELECT category_id FROM payment WHERE name=:name", {"name": transaction.target})
+    category_id = c.fetchone()
+
+    if not category_id:
+        category_id = get_subcategory_from_user(c, transaction.target)
+        c.execute("INSERT INTO payment VALUES (?, ?)", (transaction.target, category_id))
+    else:
+        category_id = category_id[0]  # Get the value from a single element tuple
 
     conn.commit()
     conn.close()
 
-def get_subcategory_from_user(cursor, target):
-    categories = cursor.execute("SELECT * FROM category")
-    print categories
+    return category_id
 
+def get_subcategory_from_user(cursor, target):
+    cursor.execute("SELECT * FROM category")
+    categories = cursor.fetchall()
+    options = []
+    categories_by_name = {}
+
+    for index, category in enumerate(categories):
+        category_id, name = category
+        categories_by_name[name] = category_id
+        options.append([index, name])
+
+    id = prompt_user_for_id(target, options)
+    return categories_by_name[options[id][1]]
+
+def prompt_user_for_id(target, options):
+    print "No category found for %s. Please select one from below:\n\n" % target
+    print tabulate(options, headers=["ID, Name"])
+    while True:
+        selection = raw_input("Enter the ID of your selection: ")
+        if (selection.isdigit() and int(selection) >= 0 and int(selection) < len(options)):
+            break
+    return int(selection)

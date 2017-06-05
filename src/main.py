@@ -2,6 +2,7 @@ import os
 import sys
 import csv
 import datetime
+from progress.bar import Bar
 
 from pynYNAB.Client import clientfromargs
 from pynYNAB.schema.budget import Transaction
@@ -57,25 +58,36 @@ def get_ynab_transaction(nordea_transaction, account_id, subcategory_id):
 
 
 def push_transactions(nordea_transactions, args):
+    print "******** FETCHING DATA FROM YNAB ********"
     client = clientfromargs(args)
     client.sync()
 
-    account = None
-    for be_account in client.budget.be_accounts:
-        if be_account.account_name == 'Checking':
-            account = be_account
-            break
+    with client.session.no_autoflush:
+        account = None
+        for be_account in client.budget.be_accounts:
+            if be_account.account_name == 'Checking':
+                account = be_account
+                break
 
-    if not account:
-        print "Could not find checking account"
-        sys.exit()
+        if not account:
+            print "Could not find checking account"
+            sys.exit()
 
-    store_categories(client.budget.be_subcategories)
+        store_categories(client.budget.be_subcategories)
+        new_transactions = []
 
-    for nordea_transaction in nordea_transactions:
-        subcategory_id = get_subcategory_for_transaction(nordea_transaction)
-        print "subcategory %s" % subcategory_id
-        # new_transaction = get_ynab_transaction(nordea_transaction, account.id, subcategory_id)
-        # client.add_transaction(new_transaction)
+        for nordea_transaction in nordea_transactions:
+            subcategory_id = get_subcategory_for_transaction(nordea_transaction)
+            new_transaction = get_ynab_transaction(nordea_transaction, account.id, subcategory_id)
+            new_transactions.append(new_transaction)
 
-    client.sync()
+        print "\n\n******** SENDING DATA TO YNAB ********\n\n"
+        bar = Bar('Sending', max=len(new_transactions))
+
+        for transaction in new_transactions:
+            client.add_transaction(transaction)
+            bar.next()
+
+        bar.finish()
+        client.sync()
+        print "******** DONE ********"
