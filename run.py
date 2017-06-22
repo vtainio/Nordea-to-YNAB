@@ -2,6 +2,7 @@ import argparse
 import os
 import sys
 from src.main import run
+import logging
 
 if __name__ == '__main__':
     # Parse filename.
@@ -27,5 +28,9 @@ if __name__ == '__main__':
     args.email = username
     args.password = password
     args.budgetname = "My Budget"
+
+    # Do not display pynYNAB logs in the console.
+    pynynab_logger = logging.getLogger('pynYNAB')
+    pynynab_logger.propagate = False
 
     run(args)

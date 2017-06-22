@@ -27,9 +27,7 @@ def process_file(filepath):
 
 
 def process_row(row):
-    outflow = False
-    if row[3][0] == '-': # Check if the transaction is negative.
-        outflow = True
+    outflow = row[3][0] == '-'  # Check if the transaction is negative.
     if outflow:
         return NordeaTransaction(row)
 
