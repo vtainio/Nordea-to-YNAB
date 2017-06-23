@@ -14,15 +14,15 @@ if __name__ == '__main__':
     password = os.environ['YNAB_PASSWORD']
 
     if not username:
-        print "No YNAB username provided"
+        print("No YNAB username provided")
         sys.exit()
 
     if not password:
-        print "No YNAB password provided"
+        print("No YNAB password provided")
         sys.exit()
 
     if not args.file:
-        print "Error: No filename provided"
+        print("Error: No filename provided")
         sys.exit()
 
     args.email = username

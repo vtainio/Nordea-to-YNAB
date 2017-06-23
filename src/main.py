@@ -5,7 +5,7 @@ import datetime
 from progress.bar import Bar
 
 from pynYNAB.Client import clientfromargs
-from pynYNAB.schema.budget import Transaction
+from pynYNAB.schema.budget import Transaction, Payee
 
 from src.database import store_categories
 from src.database import get_subcategory_for_transaction
@@ -35,14 +35,14 @@ def process_row(row):
 def run(args):
     file_path = 'transactions/%s' % args.file
     if not os.path.isfile(file_path):
-        print "Error: No such file exists (%s)" % file_path
+        print("Error: No such file exists (%s)" % file_path)
         sys.exit()
 
     nordea_transactions = process_file(file_path)
     push_transactions(nordea_transactions, args)
 
 
-def get_ynab_transaction(nordea_transaction, account_id, subcategory_id):
+def get_ynab_transaction(nordea_transaction, account_id, subcategory_id, payee_id):
     imported_date = datetime.datetime.now().date()
     splitted_amount = nordea_transaction.amount.split(",")
     return Transaction(
@@ -51,12 +51,24 @@ def get_ynab_transaction(nordea_transaction, account_id, subcategory_id):
         date=datetime.datetime.strptime(nordea_transaction.date, "%d.%m.%Y"),
         imported_date=imported_date,
         entities_subcategory_id=subcategory_id,
+        entities_payee_id=payee_id,
         source="Imported"
     )
 
 
+def find_existing_payee(name, payees):
+    for payee in payees:
+        if payee.name == name:
+            return payee
+    return None
+
+
+def create_new_payee(name):
+    return Payee(name=name.decode('utf-8'))
+
+
 def push_transactions(nordea_transactions, args):
-    print "******** FETCHING DATA FROM YNAB ********"
+    print("******** FETCHING DATA FROM YNAB ********")
     client = clientfromargs(args)
     client.sync()
 
@@ -68,24 +80,42 @@ def push_transactions(nordea_transactions, args):
                 break
 
         if not account:
-            print "Could not find checking account"
+            print("Could not find checking account")
             sys.exit()
 
         store_categories(client.budget.be_subcategories)
         new_transactions = []
+        new_payees = []
 
         for nordea_transaction in nordea_transactions:
             subcategory_id = get_subcategory_for_transaction(nordea_transaction)
-            new_transaction = get_ynab_transaction(nordea_transaction, account.id, subcategory_id)
+            payee = find_existing_payee(nordea_transaction.target, client.budget.be_payees)
+            if payee is None:
+                for new_payee in new_payees:
+                    if new_payee.name == nordea_transaction.target:
+                        payee = new_payee
+                if payee is None:
+                    payee = create_new_payee(nordea_transaction.target)
+                    new_payees.append(payee)
+            new_transaction = get_ynab_transaction(nordea_transaction, account.id, subcategory_id, payee.id)
             new_transactions.append(new_transaction)
 
-        print "\n\n******** SENDING DATA TO YNAB ********\n\n"
-        bar = Bar('Sending', max=len(new_transactions))
+        print("\n\n******** SENDING DATA TO YNAB ********\n\n")
+        print("Pushing new payees:\n")
 
+        for new_payee in new_payees:
+            client.budget.be_payees.append(new_payee)
+        client.push(len(new_payees))
+
+        print("Done...\n")
+        print("Syncing...\n")
+        client.sync()
+
+        bar = Bar('Sending transactions', max=len(new_transactions))
         for transaction in new_transactions:
             client.add_transaction(transaction)
             bar.next()
 
         bar.finish()
         client.sync()
-        print "******** DONE ********"
+        print("******** DONE ********")

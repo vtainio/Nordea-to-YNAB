@@ -65,10 +65,10 @@ def get_subcategory_from_user(cursor, target):
 
 
 def prompt_user_for_id(target, options):
-    print "No category found for %s. Please select one from below:\n\n" % target
+    print("No category found for %s. Please select one from below:\n\n" % target)
     print tabulate(options, headers=["ID, Name"])
     while True:
-        selection = raw_input("Enter the ID of your selection: ")
+        selection = raw_input("Enter the ID for %s: " % target)
         if selection.isdigit() and int(selection) >= 0 and int(selection) < len(options):
             break
     return int(selection)
