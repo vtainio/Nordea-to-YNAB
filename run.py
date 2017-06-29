@@ -3,6 +3,7 @@ import os
 import sys
 from src.main import run
 import logging
+from dotenv import find_dotenv, load_dotenv
 
 if __name__ == '__main__':
     # Parse filename.
@@ -10,6 +11,7 @@ if __name__ == '__main__':
     parser.add_argument('--file', help='Transactions filename')
     args = parser.parse_args()
 
+    load_dotenv(find_dotenv())
     username = os.environ['YNAB_USERNAME']
     password = os.environ['YNAB_PASSWORD']
 
