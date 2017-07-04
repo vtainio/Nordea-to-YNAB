@@ -331,3 +331,6 @@ wrapt==1.10.10
 # Author: John Machin
 xlrd==1.0.0
 
+# Python dotev
+# https://github.com/theskumar/python-dotenv
+python-dotenv
