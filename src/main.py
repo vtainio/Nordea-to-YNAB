@@ -4,7 +4,7 @@ import csv
 import datetime
 from progress.bar import Bar
 
-from pynYNAB.Client import clientfromargs
+from pynYNAB.ClientFactory import clientfromargs
 from pynYNAB.schema.budget import Transaction, Payee
 
 from src.database import store_categories

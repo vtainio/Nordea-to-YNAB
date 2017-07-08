@@ -200,7 +200,7 @@ pynab==0.6.8
 # License: MIT
 # Homepage: https://github.com/rienafairefr/nYNABapi
 # Author: rienafairefr
-pynYNAB===dev
+pynYNAB
 
 # pyparsing
 # License: MIT License
