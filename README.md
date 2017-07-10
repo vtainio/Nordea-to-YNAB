@@ -23,6 +23,16 @@ After that you can create a directory called `transactions` and place your expor
 
 Then you simply need to call `python run.py --file <your_file_name>` to send the transactions to YNAB.
 
+### Testing
+
+You can run the tests with the command:
+
+
+`$ py.test`
+
+You can find more information about the provied fixtures in: [FIXTURES.md](https://github.com/Wisheri/Nordea-to-YNAB/blob/master/tests/FIXTURES.md)
+
+
 ### Legal
 
 View [LICENSE](https://github.com/Wisheri/Nordea-to-YNAB/blob/master/LICENSE) for detailed information.

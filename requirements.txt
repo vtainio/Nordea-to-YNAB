@@ -334,3 +334,6 @@ xlrd==1.0.0
 # Python dotev
 # https://github.com/theskumar/python-dotenv
 python-dotenv
+
+# pytest
+pytest==3.1.3

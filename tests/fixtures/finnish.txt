@@ -1,0 +1,7 @@
+Kirjauspäivä	Arvopäivä	Maksupäivä	Määrä	Saaja/Maksaja	Tilinumero	BIC	Tapahtuma	Viite	Maksajan viite	Viesti	Kortinnumero	Kuitti
+
+18.11.2016	18.11.2016	18.11.2016	-6,26	K SUPERMARKET KAMPPI			Korttiosto	12345		HELSINKI 	123456789
+
+18.11.2016	18.11.2016	18.11.2016	-7,98	K SUPERMARKET KAMPPI			Korttiosto	12345		HELSINKI 	1234567889
+
+18.11.2016	18.11.2016	18.11.2016	63,20	URHO KEKKONEN			Pano			Palkka.
