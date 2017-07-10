@@ -10,9 +10,14 @@ Install dependencies with
 
 `pip install -r requirements.txt`
 
-Your YNAB username and password are read from environment variables so you need to export two variables called
+Create a file called `.env` and format it followingly:
 
-`YNAB_USERNAME` and `YNAB_PASSWORD`.
+```
+YNAB_USERNAME=username
+YNAB_PASSWORD=password
+```
+
+and replace `username` and `password` with your own YNAB credentials.
 
 After that you can create a directory called `transactions` and place your exports there.
 
