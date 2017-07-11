@@ -1,3 +1,4 @@
+from __future__ import print_function
 import sqlite3
 from tabulate import tabulate
 
@@ -66,7 +67,7 @@ def get_subcategory_from_user(cursor, target):
 
 def prompt_user_for_id(target, options):
     print("No category found for %s. Please select one from below:\n\n" % target)
-    print tabulate(options, headers=["ID, Name"])
+    print(tabulate(options, headers=["ID, Name"]))
     while True:
         selection = raw_input("Enter the ID for %s: " % target)
         if selection.isdigit() and int(selection) >= 0 and int(selection) < len(options):
