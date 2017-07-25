@@ -1,3 +1,4 @@
+from __future__ import print_function
 import os
 import sys
 import csv
@@ -13,7 +14,7 @@ from src.models import NordeaTransaction
 
 def process_file(filepath):
     nordea_transactions = []
-    with open(filepath, 'rb') as transactions_file:
+    with open(filepath, 'r') as transactions_file:
         reader = csv.reader(transactions_file, delimiter='\t', quotechar='|')
 
         for row in reader:
